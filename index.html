@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7f3">
+    <meta name="description" content="Browse, read, and share books with the Stacks Library.">
+    <title>Stacks — Your library, your next story</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" data-view="home" aria-label="Stacks home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Library Store<span class="brand-period">.</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="home">Home</button>
+        <button class="nav-link" data-view="catalog">Explore books</button>
+        <button class="nav-link" id="admin-nav" data-view="admin" hidden>Admin</button>
+        <button class="nav-link" data-view="apply">Membership</button>
+      </nav>
+      <button class="button button-dark header-cta" data-view="apply">Become a member <span aria-hidden="true">↗</span></button>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    </header>
+
+    <main>
+      <section class="view active" id="view-home" aria-labelledby="hero-title">
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> A LIBRARY FOR THE CURIOUS</p>
+            <h1 id="hero-title">A good book can take you <em>anywhere.</em></h1>
+            <p class="hero-description">Find your next can’t-put-it-down, stay-up-too-late, tell-everyone-about-it read.</p>
+            <div class="hero-actions">
+              <button class="button button-dark" data-view="catalog">Explore the collection <span aria-hidden="true">→</span></button>
+              <button class="button button-light" data-view="apply">Get a library card</button>
+            </div>
+            <div class="reader-note"><div class="reader-avatars" aria-hidden="true"><span>M</span><span>A</span><span>J</span><span>+</span></div><p><strong>A little reading goes a long way.</strong><br>And there’s always room for one more story.</p></div>
+          </div>
+          <div class="hero-art" aria-label="A colorful stack of books" role="img">
+            <div class="art-sun"></div><div class="art-orbit"></div>
+            <div class="art-book art-book-one"><span>THE ART<br>OF SLOW<br>LIVING</span><small>ELENA MOREAU</small></div>
+            <div class="art-book art-book-two"><span>somewhere<br>between<br>the stars</span><small>A NOVEL</small></div>
+            <div class="art-book art-book-three"><span>FIELD<br>NOTES</span><small>VOL. 08</small></div>
+            <div class="art-book art-book-four"><span>GROW<br>WILD</span><small>BOTANICAL STORIES</small></div>
+            <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✳</span>
+            <span class="art-caption">YOUR NEXT CHAPTER STARTS HERE</span>
+          </div>
+          <div class="hero-bottom"><span>01 — 03</span><span class="hero-rule"></span><span>TURN THE PAGE</span><span aria-hidden="true">↓</span></div>
+        </div>
+
+        <section class="section featured-section" aria-labelledby="featured-title">
+          <div class="section-heading">
+            <div><p class="eyebrow">A FEW GOOD PLACES TO START</p><h2 id="featured-title">Picked for your next chapter<span class="heading-dot">.</span></h2></div>
+            <button class="text-link" data-view="catalog">See all books <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="book-grid featured-grid" id="featured-books"></div>
+        </section>
+
+        <section class="membership-strip">
+          <div class="strip-mark" aria-hidden="true">✳</div>
+          <div><p class="eyebrow">YOUR VERY OWN LIBRARY CARD</p><h2>Stories are better when they’re shared.</h2><p>Join your library community and make the shelves yours.</p></div>
+          <button class="button button-dark" data-view="apply">Apply for membership <span aria-hidden="true">→</span></button>
+        </section>
+      </section>
+
+      <section class="view inner-view" id="view-catalog" aria-labelledby="catalog-title">
+        <div class="inner-heading">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> THE GOOD STUFF</p>
+          <h1 id="catalog-title">Find your next <em>favorite.</em></h1>
+          <p>Browse the shelves and follow whatever catches your eye.</p>
+        </div>
+        <p class="server-status" id="server-status" role="status" aria-live="polite"></p>
+        <div class="catalog-toolbar">
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="book-search" type="search" aria-label="Search books" placeholder="Search by title or author"></label>
+          <label class="select-wrap"><span class="sr-only">Filter books by category</span><select id="category-filter"><option value="">All shelves</option></select></label>
+          <button class="saved-filter" id="saved-filter" type="button" aria-pressed="false">♡ Reading list <span id="saved-count">0</span></button>
+          <span class="result-count" id="book-result-count"></span>
+        </div>
+        <div class="book-grid catalog-grid" id="catalog-books"></div>
+        <p class="local-note">Books are shared by the library server. Admins can add PDFs; all visitors can read them here.</p>
+      </section>
+
+      <section class="view inner-view" id="view-admin" aria-labelledby="admin-title">
+        <div class="inner-heading">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> LIBRARY MANAGEMENT</p>
+          <h1 id="admin-title">Add a book <em>PDF.</em></h1>
+          <p>Admins can add a PDF to a catalog book. It will be available to every library visitor.</p>
+        </div>
+        <div class="admin-card">
+          <p class="admin-security-note">You are signed in as an admin. PDF files are limited to 25 MB.</p>
+          <form id="admin-upload-form">
+            <label class="form-field">Catalog book<select name="bookId" id="upload-book" required></select></label>
+            <label class="form-field">PDF file<input name="pdf" type="file" accept=".pdf,application/pdf" required></label>
+            <button class="button button-dark submit-button" type="submit">Upload shared PDF <span aria-hidden="true">↑</span></button>
+            <p class="admin-upload-status" id="admin-upload-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="view inner-view" id="view-apply" aria-labelledby="apply-title">
+        <div class="application-layout">
+          <div class="application-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR NEXT CHAPTER</p>
+            <h1 id="apply-title">Make yourself <em>at home.</em></h1>
+            <p class="application-intro">A library card is a small thing that opens up a whole lot. Tell us a little about yourself to get started.</p>
+            <div class="application-perks">
+              <div><span class="perk-number">01</span><p><strong>Find your people</strong><span>Join a community of curious readers.</span></p></div>
+              <div><span class="perk-number">02</span><p><strong>Explore at your pace</strong><span>Discover new authors, ideas, and worlds.</span></p></div>
+              <div><span class="perk-number">03</span><p><strong>Keep the stories close</strong><span>Save books you want to remember.</span></p></div>
+            </div>
+            <p class="local-note">Demo application: your details are saved only in this browser and are not sent to a library.</p>
+          </div>
+          <div class="application-card">
+            <div class="form-heading"><span class="form-icon" aria-hidden="true">✳</span><div><p class="eyebrow">MEMBERSHIP</p><h2>Let’s get to know you</h2></div></div>
+            <div id="application-status" role="status" aria-live="polite"></div>
+            <form id="application-form">
+              <label class="form-field">Your name<input name="name" autocomplete="name" placeholder="e.g. Alex Morgan" required maxlength="80"></label>
+              <label class="form-field">Email address<input name="email" type="email" autocomplete="email" placeholder="you@example.com" required maxlength="120"></label>
+              <label class="form-field">What are you studying or interested in?<span class="optional-label">OPTIONAL</span><input name="interests" placeholder="e.g. literature, design, just curious" maxlength="120"></label>
+              <label class="checkbox-field"><input name="agree" type="checkbox" required><span>I understand this demo saves my application on this device only.</span></label>
+              <button class="button button-dark submit-button" type="submit">Save my application <span aria-hidden="true">→</span></button>
+              <p class="form-footnote">No password needed. This is a local demo, not an official library application.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#" data-view="home"><span class="brand-mark" aria-hidden="true">S</span><span>stacks<span class="brand-period">.</span></span></a>
+      <p>Made for the love of a good story.</p>
+      <button class="admin-access-button" id="admin-access-button" type="button">Admin sign-in</button>
+      <span>© <span id="current-year"></span> Stacks Library</span>
+    </footer>
+
+    <dialog class="book-dialog admin-login-dialog" id="admin-login-dialog" aria-labelledby="admin-login-title">
+      <div class="book-dialog-heading">
+        <span class="book-category">ADMIN ONLY</span>
+        <button class="book-dialog-close" id="admin-login-close" type="button" aria-label="Close admin sign-in">×</button>
+      </div>
+      <h2 id="admin-login-title">Admin sign-in</h2>
+      <p class="book-dialog-note">Enter the admin key provided by the library administrator.</p>
+      <form id="admin-login-form">
+        <label class="form-field">Admin key<input id="admin-login-key" type="password" autocomplete="current-password" required></label>
+        <button class="button button-dark book-file-action" type="submit">Sign in</button>
+        <p class="admin-login-status" id="admin-login-status" role="alert" aria-live="polite"></p>
+      </form>
+    </dialog>
+
+    <dialog class="book-dialog" id="book-dialog" aria-labelledby="book-dialog-title">
+      <div class="book-dialog-heading">
+        <span class="book-category" id="book-dialog-category"></span>
+        <button class="book-dialog-close" id="book-dialog-close" type="button" aria-label="Close book details">×</button>
+      </div>
+      <h2 id="book-dialog-title"></h2>
+      <p class="book-dialog-author" id="book-dialog-author"></p>
+      <p class="book-dialog-note" id="book-dialog-note"></p>
+      <p class="book-dialog-availability" id="book-access-note"></p>
+      <button class="button button-dark book-file-action" id="book-read-button" type="button">Read book</button>
+    </dialog>
+
+    <dialog class="book-reader-dialog" id="book-reader-dialog" aria-labelledby="book-reader-title">
+      <div class="book-reader-heading">
+        <div><h2 id="book-reader-title"></h2><p id="book-reader-filename"></p></div>
+        <button class="book-dialog-close" id="book-reader-close" type="button" aria-label="Close reader">×</button>
+      </div>
+      <p class="book-reader-error" id="book-reader-error" role="alert"></p>
+      <iframe class="book-reader-pdf" id="book-reader-pdf" hidden title="PDF book reader"></iframe>
+      <div class="book-reader-content" id="book-reader-content" hidden></div>
+      <nav class="reader-navigation" id="reader-navigation" aria-label="Book pages" hidden>
+        <button class="button button-light" id="reader-previous" type="button">Previous</button>
+        <span id="reader-page-count"></span>
+        <button class="button button-light" id="reader-next" type="button">Next</button>
+      </nav>
+    </dialog>
+  </body>
+</html>
